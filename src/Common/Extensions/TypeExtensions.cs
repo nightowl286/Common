@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TNO.Common.Extensions
 {
@@ -36,6 +37,26 @@ namespace TNO.Common.Extensions
             return false;
 
          return true;
+      }
+      public static bool IsSubclassOfDefinition(this Type type, Type genericDefnition, [NotNullWhen(true)] out Type? constructedGeneric)
+      {
+         if (!genericDefnition.IsGenericTypeDefinition)
+            throw new ArgumentException($"The given definition ({genericDefnition}) was not a generic definition.", nameof(genericDefnition));
+
+         do
+         {
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == genericDefnition)
+            {
+               constructedGeneric = type;
+               return true;
+            }
+
+            type = type.BaseType;
+         }
+         while (type != typeof(object));
+
+         constructedGeneric = null;
+         return false;
       }
    }
 }
