@@ -3,7 +3,7 @@
 namespace TNO.Common
 {
    /// <summary>
-   /// Contains the access modifier as defined on 
+   /// Contains the access modifiers as defined on 
    /// <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/access-modifiers">Access Modifiers - C# Reference</see>.
    /// </summary>
    [Flags]
