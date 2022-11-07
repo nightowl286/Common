@@ -69,11 +69,12 @@ namespace TNO.Common.Extensions
       ///      If the given <paramref name="type"/> is a generic type definition return <see langword="false"/>, 
       ///      unless <see langword="true"/> is given as <paramref name="ignoreTypeDefinition"/>.
       ///      </item>
-      ///   <item>Return <see langword="false"/> if the given <paramref name="type"/> is an <see langword="interface"/>.</item>
-      ///   <item>Return <see langword="false"/> if the given <paramref name="type"/> is <see langword="abstract"/>.</item>
-      ///   <item>Return <see langword="false"/> if the given <paramref name="type"/> is an <see langword="enum"/>.</item>
+      ///   <item>
+      ///      Return <see langword="false"/> if the given <paramref name="type"/> is 
+      ///      <see langword="abstract"/>, an <see langword="interface"/> or an <see langword="enum"/>.
+      ///   </item>
+      ///   <item>Returns <see langword="true"/> if none of the above conditions apply.</item>
       /// </list>
-      /// Returns <see langword="true"/> if none of the above conditions apply.
       /// </remarks>
       public static bool CanCreateInstance(this Type type, bool ignoreTypeDefinition = false)
       {

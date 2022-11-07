@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System;
 
 namespace TNO.Common.Extensions
 {
@@ -19,7 +20,7 @@ namespace TNO.Common.Extensions
       /// This method performs the following checks (in the specified order).
       /// <list type="number">
       ///   <item>Returns <see langword="false"/> if the <see cref="DisallowNullAttribute"/> attribute is present.</item>
-      ///   <item>Whether the <see cref="TypeExtensions.IsNullable(System.Type)"/> method call returns <see langword="true"/>.</item>
+      ///   <item>Whether the <see cref="TypeExtensions.IsNullable(Type)"/> method call returns <see langword="true"/>.</item>
       ///   <item>Whether the <see cref="AllowNullAttribute"/> is present.</item>
       /// </list>
       /// </remarks>
