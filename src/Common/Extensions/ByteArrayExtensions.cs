@@ -1,5 +1,6 @@
 ﻿namespace TNO.Common.Extensions
 {
+   // Todo(Nightowl): Ignoring documentation for this, need to figure out why it even exists;
    public static class ByteArrayExtensions
    {
       #region Functions
