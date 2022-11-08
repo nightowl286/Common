@@ -16,7 +16,7 @@ namespace TNO.Common.Disposable
    ///   </item>
    /// </list>
    /// </remarks>
-   public abstract class Disposable : IDisposable
+   public abstract class DisposableBase : IDisposable
    {
       #region Fields
       private bool _disposed = false;
