@@ -46,13 +46,11 @@ namespace TNO.Common.Tests.Extensions
       }
 
       #region Test Methods
-#pragma warning disable IDE0001
       public static void TestMethod_Nullable_Parameter1(int? _) { }
       public static void TestMethod_Nullable_Parameter2([AllowNull] string? _) { }
       public static void TestMethod_Nullable_Parameter3(long? _) { }
       public static void TestMethod_Nullable_Parameter4([AllowNull] int? _) { }
       public static void TestMethod_Nullable_Parameter5([AllowNull] long? _) { }
-#pragma warning restore IDE0001
 
       public static void TestMethod_NonNullable_Parameter1(int _) { }
       public static void TestMethod_NonNullable_Parameter2(string _) { }
