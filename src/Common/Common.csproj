@@ -10,10 +10,14 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Nightowl</Authors>
     <Company>TNO</Company>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Common</Title>
+    <Description>A library that contains common functionality that is general, any specific domain will get its own library.</Description>
+    <PackageTags>commonÁ</PackageTags>
+    <FileVersion></FileVersion>
   </PropertyGroup>
 
 </Project>
