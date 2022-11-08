@@ -13,45 +13,33 @@ namespace TNO.Common.Observers
    public class AsyncEnumerableObserver<T> : IObserver<T>
    {
       #region Fields
-      private T _latestValue;
-      private bool _yieldValue;
-      private SemaphoreSlim _canWriteHandle;
-      private SemaphoreSlim _canReadHandle;
+      private readonly Queue<T> _values;
+      private readonly SemaphoreSlim _completionHandler;
+      private readonly TimeSpan _waitTimeout = TimeSpan.FromMilliseconds(5);
       private Exception? _error;
       #endregion
 
       /// <summary>Creates a new instance of the <see cref="AsyncEnumerableObserver{T}"/>.</summary>
       public AsyncEnumerableObserver()
       {
-         _latestValue = default!;
-
-         // Todo(Anyone): Look into maybe using a Read/Write lock for this;
-         _canWriteHandle = new SemaphoreSlim(1);
-         _canReadHandle = new SemaphoreSlim(0);
+         _completionHandler = new SemaphoreSlim(0);
+         _values = new Queue<T>();
       }
 
       #region Methods
       /// <inheritdoc/>
-      public void OnCompleted() => _canReadHandle.Release();
+      public void OnCompleted() => _completionHandler.Release();
 
       /// <inheritdoc/>
       public void OnError(Exception error)
       {
          _error = error;
 
-         _canReadHandle.Release();
+         _completionHandler.Release();
       }
 
       /// <inheritdoc/>
-      public void OnNext(T value)
-      {
-         _canWriteHandle.Wait();
-
-         _latestValue = value;
-         _yieldValue = true;
-
-         _canReadHandle.Release();
-      }
+      public void OnNext(T value) => _values.Enqueue(value);
 
       /// <summary>
       /// Get an <see cref="IAsyncEnumerable{T}"/> that will asynchronously
@@ -63,21 +51,20 @@ namespace TNO.Common.Observers
       {
          while (true)
          {
-            await _canReadHandle.WaitAsync(cancellationToken);
-
-            if (_yieldValue)
+            while (_values.Count > 0)
             {
-               _yieldValue = false;
-               yield return _latestValue;
+               if (cancellationToken.IsCancellationRequested)
+                  yield break;
+
+               yield return _values.Dequeue();
             }
-            else
+
+            if (await _completionHandler.WaitAsync(_waitTimeout))
                break;
 
-            _canWriteHandle.Release();
+            if (cancellationToken.IsCancellationRequested)
+               yield break;
          }
-
-         _canWriteHandle.Dispose();
-         _canReadHandle.Dispose();
 
          if (_error != null)
             throw _error;

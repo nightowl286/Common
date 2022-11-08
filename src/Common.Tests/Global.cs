@@ -9,4 +9,5 @@ global using Microsoft.VisualStudio.TestTools.UnitTesting;
 internal static class Category
 {
    public const string Extensions = "Extensions";
+   public const string Observers = "Observers";
 }

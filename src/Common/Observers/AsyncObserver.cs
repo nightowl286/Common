@@ -11,7 +11,6 @@ namespace TNO.Common.Observers
    public class AsyncObserver<T> : IObserver<T>
    {
       #region Fields
-      private bool _hasValue;
       private T _latestResult;
       private TaskCompletionSource<T> _completionSource;
       #endregion
@@ -32,21 +31,26 @@ namespace TNO.Common.Observers
       /// <inheritdoc/>
       public void OnCompleted()
       {
-         if (_hasValue)
-         {
-            _completionSource.SetResult(_latestResult);
-         }
+         _completionSource.SetResult(_latestResult);
       }
 
       /// <inheritdoc/>
-      public void OnError(Exception error) => _completionSource.SetException(error);
-
-      /// <inheritdoc/>
-      public void OnNext(T value)
+      public void OnError(Exception error)
       {
-         _latestResult = value;
-         _hasValue = true;
+         TaskStatus status = Task.Status;
+         bool stillExecuting =
+            status != TaskStatus.Faulted &&
+            status != TaskStatus.Canceled &&
+            status != TaskStatus.RanToCompletion;
+
+         if (!stillExecuting)
+            throw error;
+
+         _completionSource.SetException(error);
       }
+
+      /// <inheritdoc/>
+      public void OnNext(T value) => _latestResult = value;
       #endregion
    }
 }
