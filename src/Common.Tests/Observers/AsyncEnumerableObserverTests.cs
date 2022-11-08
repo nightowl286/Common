@@ -114,6 +114,21 @@ namespace TNO.Common.Tests.Observers
          // Assert
          await Assert.ThrowsExceptionAsync<TestException>(Act);
       }
+
+      [TestMethod]
+      public async Task GetAsync_ObjectDisposed_ThrowObjectDisposedException()
+      {
+         // Arrange
+         AsyncEnumerableObserver<int> sut = new AsyncEnumerableObserver<int>();
+         sut.OnCompleted();
+         _ = await sut.GetAsync().ToArrayAsync();
+
+         // Act
+         async Task Act() => await sut.GetAsync().ToArrayAsync();
+
+         // Assert
+         await Assert.ThrowsExceptionAsync<ObjectDisposedException>(Act);
+      }
       #endregion
    }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace TNO.Common.Disposable
 {
@@ -50,6 +52,26 @@ namespace TNO.Common.Disposable
 
       /// <summary>Override to dispose unmanaged resources.</summary>
       protected virtual void DisposeUnmanaged() { }
+
+      /// <summary>Throws the <see cref="ObjectDisposedException"/> if this object has been disposed.</summary>
+      /// <param name="objectName">The name of this object.</param>
+      [MethodImpl(MethodImplOptions.NoInlining)]
+      protected void ThrowIfDisposed(string objectName)
+      {
+         if (_disposed)
+            ThrowObjectDisposed(objectName);
+      }
+      #endregion
+
+      #region Functions
+      /// <summary>Throws the <see cref="ObjectDisposedException"/> with the given <paramref name="objectName"/>.</summary>
+      /// <param name="objectName">The name of the object that was disposed.</param>
+      [DoesNotReturn]
+      [MethodImpl(MethodImplOptions.NoInlining)]
+      protected static void ThrowObjectDisposed(string objectName)
+      {
+         throw new ObjectDisposedException(objectName, $"This object ({objectName}) has been disposed and should no longer be accessed.");
+      }
       #endregion
    }
 }

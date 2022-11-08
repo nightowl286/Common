@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using TNO.Common.Disposable;
 
 namespace TNO.Common.Observers
 {
@@ -10,7 +11,7 @@ namespace TNO.Common.Observers
    /// that can be used to receive multiple values.
    /// </summary>
    /// <typeparam name="T">The type that provides notification information.</typeparam>
-   public class AsyncEnumerableObserver<T> : IObserver<T>
+   public class AsyncEnumerableObserver<T> : DisposableBase, IObserver<T>
    {
       #region Fields
       private readonly Queue<T> _values;
@@ -49,25 +50,44 @@ namespace TNO.Common.Observers
       /// <returns>A asynchronous enumeration over all the received values.</returns>
       public async IAsyncEnumerable<T> GetAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
       {
-         while (true)
+         ThrowIfDisposed(nameof(AsyncEnumerableObserver<T>));
+
+         try
          {
-            while (_values.Count > 0)
+            while (true)
             {
+               while (_values.Count > 0)
+               {
+                  if (cancellationToken.IsCancellationRequested)
+                  {
+                     yield break;
+                  }
+
+                  yield return _values.Dequeue();
+               }
+
+               if (await _completionHandler.WaitAsync(_waitTimeout))
+                  break;
+
                if (cancellationToken.IsCancellationRequested)
+               {
                   yield break;
-
-               yield return _values.Dequeue();
+               }
             }
-
-            if (await _completionHandler.WaitAsync(_waitTimeout))
-               break;
-
-            if (cancellationToken.IsCancellationRequested)
-               yield break;
+            if (_error != null)
+               throw _error;
          }
+         finally
+         {
+            Dispose();
+         }
+      }
 
-         if (_error != null)
-            throw _error;
+      /// <inheritdoc/>
+      protected override void DisposeManaged()
+      {
+         _values.Clear();
+         _completionHandler.Dispose();
       }
       #endregion
    }
