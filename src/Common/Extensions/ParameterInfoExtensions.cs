@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System;
 
 namespace TNO.Common.Extensions
 {
@@ -10,6 +10,9 @@ namespace TNO.Common.Extensions
    public static class ParameterInfoExtensions
    {
       #region Functions
+#if NET5_0_OR_GREATER
+#pragma warning disable CS0419 // Weird bug? There is no ambiguity. https://github.com/dotnet/roslyn/issues/51013
+#endif
       /// <summary>Checks whether the given <paramref name="parameter"/> is nullable.</summary>
       /// <param name="parameter">The parameter info to check.</param>
       /// <returns>
@@ -24,6 +27,9 @@ namespace TNO.Common.Extensions
       ///   <item>Whether the <see cref="AllowNullAttribute"/> is present.</item>
       /// </list>
       /// </remarks>
+#if NET5_0_OR_GREATER
+#pragma warning restore CS0419
+#endif
       public static bool IsNullable(this ParameterInfo parameter)
       {
          if (parameter.GetCustomAttribute<DisallowNullAttribute>() is not null)

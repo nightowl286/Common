@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TNO.Common.Extensions
@@ -97,7 +98,7 @@ namespace TNO.Common.Extensions
       /// Will only be <see langword="null"/> if this method returns <see langword="false"/>.
       /// </param>
       /// <returns>
-      /// <see langword="true"/> if the given <paramref name="type"/> inherits the the 
+      /// <see langword="true"/> if the given <paramref name="type"/> inherits the 
       /// given <paramref name="genericDefinition"/>, <see langword="false"/> otherwise.
       /// </returns>
       /// <exception cref="ArgumentException">
@@ -108,14 +109,21 @@ namespace TNO.Common.Extensions
          if (!genericDefinition.IsGenericTypeDefinition)
             throw new ArgumentException($"The given definition ({genericDefinition}) was not a generic definition.", nameof(genericDefinition));
 
-         do
+         if (type == typeof(object))
          {
+            constructedGeneric = null;
+            return false;
+         }
+
+         do
+         { 
             if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == genericDefinition)
             {
                constructedGeneric = type;
                return true;
             }
 
+            Debug.Assert(type.BaseType != null);
             type = type.BaseType;
          }
          while (type != typeof(object));
