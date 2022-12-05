@@ -11,10 +11,10 @@ namespace TNO.Common.Disposable
    /// Override any of these 3 methods to provide functionality.
    /// <list type="bullet">
    ///   <item><see cref="DisposeManaged"/> to dispose managed resources.</item>
-   ///   <item><see cref="DisposeUnmanaged"/> to dispose unmanages resources.</item>
+   ///   <item><see cref="DisposeUnmanaged"/> to dispose unmanaged resources.</item>
    ///   <item>
    ///      Or implement a finalizer and call <see cref="Dispose(bool)"/> with <see langword="false"/>
-   ///      if you have also overriden <see cref="DisposeUnmanaged"/>.
+   ///      if you have also overridden <see cref="DisposeUnmanaged"/>.
    ///   </item>
    /// </list>
    /// </remarks>

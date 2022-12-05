@@ -40,7 +40,7 @@ namespace TNO.Common.Tests.Observers
          sut.OnCompleted();
          IAsyncEnumerable<int> enumerable = sut.GetAsync();
 
-         // Pre Asssert
+         // Pre Assert
          int[] results = await enumerable.ToArrayAsync();
 
          // Assert

@@ -31,7 +31,7 @@ namespace TNO.Common.Observers
 
       /// <summary>
       /// Converts the given <paramref name="subscribeDelegate"/> into a
-      /// <see cref="IAsyncEnumerable{T}"/> that can be used to enumrate
+      /// <see cref="IAsyncEnumerable{T}"/> that can be used to enumerate
       /// through all the received values.
       /// </summary>
       /// <typeparam name="T">The type that provides notification information.</typeparam>
