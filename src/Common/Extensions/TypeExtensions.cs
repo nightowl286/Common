@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace TNO.Common.Extensions
 {
@@ -37,23 +39,9 @@ namespace TNO.Common.Extensions
       /// </returns>
       public static bool ImplementsOpenInterface(this Type type, Type openInterface)
       {
-         if (!openInterface.IsGenericTypeDefinition)
-            return false;
+         IEnumerable<Type> implemented = GetOpenInterfaceImplementations(type, openInterface);
 
-         Type[] implementedInterfaces = type.GetInterfaces();
-
-         foreach (Type implementedInterface in implementedInterfaces)
-         {
-            if (!implementedInterface.IsGenericType)
-               continue;
-
-            Type definition = implementedInterface.GetGenericTypeDefinition();
-
-            if (definition == openInterface)
-               return true;
-         }
-
-         return false;
+         return implemented.Any();
       }
 
       /// <summary>Whether or an instance of the given <paramref name="type"/> can be created.</summary>
@@ -109,14 +97,8 @@ namespace TNO.Common.Extensions
          if (!genericDefinition.IsGenericTypeDefinition)
             throw new ArgumentException($"The given definition ({genericDefinition}) was not a generic definition.", nameof(genericDefinition));
 
-         if (type == typeof(object))
+         while (type != typeof(object))
          {
-            constructedGeneric = null;
-            return false;
-         }
-
-         do
-         { 
             if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == genericDefinition)
             {
                constructedGeneric = type;
@@ -126,10 +108,35 @@ namespace TNO.Common.Extensions
             Debug.Assert(type.BaseType != null);
             type = type.BaseType;
          }
-         while (type != typeof(object));
 
          constructedGeneric = null;
          return false;
+      }
+
+      /// <summary>
+      /// Returns all the interfaces implemented by the given <paramref name="type"/>
+      /// that match the given <paramref name="openInterface"/>.
+      /// </summary>
+      /// <param name="type">The type to check.</param>
+      /// <param name="openInterface">The open interface to check for implementations of.</param>
+      /// <returns>An enumerable of all the open interface implementations.</returns>
+      public static IEnumerable<Type> GetOpenInterfaceImplementations(this Type type, Type openInterface)
+      {
+         if (!openInterface.IsGenericTypeDefinition)
+            yield break;
+
+         Type[] implementedInterfaces = type.GetInterfaces();
+
+         foreach (Type implementedInterface in implementedInterfaces)
+         {
+            if (!implementedInterface.IsGenericType)
+               continue;
+
+            Type definition = implementedInterface.GetGenericTypeDefinition();
+
+            if (definition == openInterface)
+               yield return implementedInterface;
+         }
       }
    }
 }
