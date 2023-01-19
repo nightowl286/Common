@@ -50,7 +50,7 @@ public static class EnumExtensions
    /// <typeparam name="T">The type of the enum flags.</typeparam>
    /// <param name="values">The enum flags to combine.</param>
    /// <returns>A single enum value that represents the combined flag <paramref name="values"/>.</returns>
-   public static T CombineFlags<T>(IEnumerable<T> values) where T : struct, Enum
+   public static T CombineFlags<T>(this IEnumerable<T> values) where T : struct, Enum
    {
       Type enumType = typeof(T);
       Type underlyingType = enumType.GetEnumUnderlyingType();
