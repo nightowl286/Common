@@ -8,6 +8,8 @@ namespace TNO.Common.Tests.Extensions;
 public class EnumExtensionsTests
 {
    #region Test Methods
+
+   #region Get Values Ascending
    [DynamicData(
       nameof(GetAllOrderingEnums),
       DynamicDataSourceType.Method,
@@ -45,7 +47,6 @@ public class EnumExtensionsTests
       // Assert
       AssertArrayIsAscending(result);
    }
-
    private void AssertArrayIsAscending(Array array)
    {
       if (array.Length < 2) return;
@@ -74,6 +75,48 @@ public class EnumExtensionsTests
    }
    #endregion
 
+   #region Combine Flags
+   [TestMethod]
+   public void CombineFlags_WithInt_Successful()
+   {
+      // Arrange
+      EnumFlagsInt[] flags = new[]
+      {
+         EnumFlagsInt.One,
+         EnumFlagsInt.Two,
+         EnumFlagsInt.Four,
+         EnumFlagsInt.Eight,
+      };
+
+      // Act
+      EnumFlagsInt result = EnumExtensions.CombineFlags(flags);
+
+      // Assert
+      Assert.AreEqual(EnumFlagsInt.All, result);
+   }
+
+   [TestMethod]
+   public void CombineFlags_WithULong_Successful()
+   {
+      // Arrange
+      EnumFlagsUInt64[] flags = new[]
+      {
+         EnumFlagsUInt64.One,
+         EnumFlagsUInt64.Two,
+         EnumFlagsUInt64.Four,
+         EnumFlagsUInt64.Eight,
+         EnumFlagsUInt64.Large,
+      };
+
+      // Act
+      EnumFlagsUInt64 result = EnumExtensions.CombineFlags(flags);
+
+      // Assert
+      Assert.AreEqual(EnumFlagsUInt64.All, result);
+   }
+   #endregion
+   #endregion
+
    #region Helpers
    private static IEnumerable<object[]> GetAllOrderingEnums()
    {
@@ -94,6 +137,7 @@ public class EnumExtensionsTests
    #endregion
 
    #region Test Enums
+   #region Ordering Enums
    private enum EnumAllPositiveAscending
    {
       A = 1,
@@ -130,5 +174,28 @@ public class EnumExtensionsTests
       B = 0,
       A = -1
    }
+   #endregion
+
+   #region Flag Enums
+   private enum EnumFlagsInt : int
+   {
+      None = 0,
+      One = 1,
+      Two = 2,
+      Four = 4,
+      Eight = 8,
+      All = One | Two | Four | Eight
+   }
+   private enum EnumFlagsUInt64 : ulong
+   {
+      None = 0,
+      One = 1,
+      Two = 2,
+      Four = 4,
+      Eight = 8,
+      Large = 9_223_372_036_854_775_808,
+      All = One | Two | Four | Eight | Large
+   }
+   #endregion
    #endregion
 }

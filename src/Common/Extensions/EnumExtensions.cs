@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace TNO.Common.Extensions;
@@ -42,6 +44,37 @@ public static class EnumExtensions
 
       return (T[])values;
 #endif
+   }
+
+   /// <summary>Combines the given flag <paramref name="values"/> into a single enum value of the type <typeparamref name="T"/>.</summary>
+   /// <typeparam name="T">The type of the enum flags.</typeparam>
+   /// <param name="values">The enum flags to combine.</param>
+   /// <returns>A single enum value that represents the combined flag <paramref name="values"/>.</returns>
+   public static T CombineFlags<T>(IEnumerable<T> values) where T : struct, Enum
+   {
+      Type enumType = typeof(T);
+      Type underlyingType = enumType.GetEnumUnderlyingType();
+
+      if (underlyingType == typeof(ulong))
+         return CombineFlagsUInt64(values);
+
+      long flags = 0;
+      foreach (T flag in values)
+         flags |= Convert.ToInt64(flag);
+
+      return (T)Enum.ToObject(enumType, flags);
+   }
+
+   private static T CombineFlagsUInt64<T>(IEnumerable<T> values) where T : struct, Enum
+   {
+      Type enumType = typeof(T);
+      Debug.Assert(enumType.GetEnumUnderlyingType() == typeof(ulong));
+
+      ulong flags = 0;
+      foreach (T flag in values)
+         flags |= Convert.ToUInt64(flag);
+
+      return (T)Enum.ToObject(enumType, flags);
    }
    #endregion
 }
