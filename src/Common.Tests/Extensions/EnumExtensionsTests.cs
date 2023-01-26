@@ -115,6 +115,24 @@ public class EnumExtensionsTests
       Assert.AreEqual(EnumFlagsUInt64.All, result);
    }
    #endregion
+
+   #region Split Values
+   [TestMethod]
+   public void SplitValuesAscending_WithCombinedFlags_GetsSetFlags()
+   {
+      // Arrange
+      EnumFlagsInt combinedFlags = EnumFlagsInt.Four | EnumFlagsInt.One | EnumFlagsInt.Two;
+      EnumFlagsInt[] expected = new[] { EnumFlagsInt.One, EnumFlagsInt.Two, EnumFlagsInt.Four };
+
+      // Act
+      EnumFlagsInt[] result = EnumExtensions
+         .SplitValuesAscending(combinedFlags)
+         .ToArray();
+
+      // Assert
+      CollectionAssert.AreEqual(expected, result);
+   }
+   #endregion
    #endregion
 
    #region Helpers
@@ -129,7 +147,7 @@ public class EnumExtensionsTests
       yield return new[] { typeof(EnumMixedAscending) };
       yield return new[] { typeof(EnumMixedDescending) };
    }
-   public static string GetAllOrderingEnumsTestDisplayNames(MethodInfo methodInfo, object[] values)
+   public static string GetAllOrderingEnumsTestDisplayNames(MethodInfo _, object[] values)
    {
       Type enumType = (Type)values[0];
       return enumType.Name;

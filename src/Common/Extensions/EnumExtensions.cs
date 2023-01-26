@@ -46,6 +46,30 @@ public static class EnumExtensions
 #endif
    }
 
+   /// <summary>
+   /// Gets all the individual flags (in ascending order), from 
+   /// the given combined <paramref name="flags"/> value.
+   /// </summary>
+   /// <typeparam name="T">The type of the enum.</typeparam>
+   /// <param name="flags">The combined flags value.</param>
+   /// <returns>An enumerable of the present flags, in ascending order.</returns>
+   public static IEnumerable<T> SplitValuesAscending<T>(this T flags) where T : struct, Enum
+   {
+      // Todo(Nightowl): Should this only return single bit flag values?;
+
+      T defaultValue = (T)Enum.ToObject(typeof(T), 0);
+      T[] ascending = GetValuesAscending<T>();
+
+      foreach (T possibleFlag in ascending)
+      {
+         if (possibleFlag.Equals(defaultValue))
+            continue;
+
+         if (flags.HasFlag(possibleFlag))
+            yield return possibleFlag;
+      }
+   }
+
    /// <summary>Combines the given flag <paramref name="values"/> into a single enum value of the type <typeparamref name="T"/>.</summary>
    /// <typeparam name="T">The type of the enum flags.</typeparam>
    /// <param name="values">The enum flags to combine.</param>
