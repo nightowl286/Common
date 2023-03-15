@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>10</LangVersion>
+    <LangVersion>11</LangVersion>
     <TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <AssemblyName>TNO.$(MSBuildProjectName)</AssemblyName>
@@ -17,15 +17,6 @@
     <Title>Common</Title>
     <Description>A library that contains common functionality that is general, any specific domain will get its own library.</Description>
     <PackageTags>common</PackageTags>
-    <FileVersion></FileVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
-    <WarningLevel>6</WarningLevel>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-    <WarningLevel>6</WarningLevel>
   </PropertyGroup>
 
 </Project>
