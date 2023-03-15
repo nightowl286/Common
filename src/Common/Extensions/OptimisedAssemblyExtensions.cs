@@ -43,12 +43,13 @@ public static class OptimisedAssemblyExtensions
    /// <returns>
    /// <see langword="true"/> if the given <paramref name="member"/> is in an
    /// optimised <see cref="Assembly"/>, <see langword="false"/> otherwise.
-   /// <see langword="null"/> will be returned if the <paramref name="member"/> does not have a declaring type.
    /// </returns>
-   public static bool? IsInOptimisedAssembly(this MemberInfo member)
+   public static bool IsInOptimisedAssembly(this MemberInfo member)
    {
       if (member.DeclaringType is null)
-         return null;
+      {
+         return IsOptimised(member.Module.Assembly);
+      }
 
       return IsOptimised(member.DeclaringType.Assembly);
    }
