@@ -11,7 +11,6 @@ namespace TNO.Common.Extensions;
 public static class OptimisedAssemblyExtensions
 {
    #region Is Optimised
-
    /// <summary>Checks whether the given <paramref name="assembly"/> is optimised.</summary>
    /// <param name="assembly">The assembly to check.</param>
    /// <returns>
@@ -44,8 +43,14 @@ public static class OptimisedAssemblyExtensions
    /// <returns>
    /// <see langword="true"/> if the given <paramref name="member"/> is in an
    /// optimised <see cref="Assembly"/>, <see langword="false"/> otherwise.
+   /// <see langword="null"/> will be returned if the <paramref name="member"/> does not have a declaring type.
    /// </returns>
-   public static bool IsInOptimisedAssembly(this MemberInfo member)
-      => IsOptimised(member.DeclaringType.Assembly);
+   public static bool? IsInOptimisedAssembly(this MemberInfo member)
+   {
+      if (member.DeclaringType is null)
+         return null;
+
+      return IsOptimised(member.DeclaringType.Assembly);
+   }
    #endregion
 }
