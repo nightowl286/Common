@@ -1,10 +1,10 @@
 ﻿using TNO.Common.Observers;
 using TNO.Common.Tasks;
 using TNO.Tests.Common;
-using TNO.Tests.Common.Extensions;
 
 namespace TNO.Common.Tests.Observers;
 
+#pragma warning disable IDE1006 // Naming Styles | Test methods don't need the Async suffix.
 [TestClass]
 [TestCategory(Category.Observers)]
 public class AsyncEnumerableObserverTests
@@ -131,3 +131,5 @@ public class AsyncEnumerableObserverTests
    }
    #endregion
 }
+
+#pragma warning restore IDE1006 // Naming Styles | Test methods don't need the Async suffix.
