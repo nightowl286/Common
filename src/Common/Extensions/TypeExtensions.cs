@@ -11,6 +11,7 @@ namespace TNO.Common.Extensions;
 /// </summary>
 public static class TypeExtensions
 {
+   #region Methods
    /// <summary>Checks whether the given <paramref name="type"/> is a nullable type.</summary>
    /// <param name="type">The type to check.</param>
    /// <returns>
@@ -32,16 +33,78 @@ public static class TypeExtensions
    /// The type of the open interface, this means a non-constructed generic interface.
    /// </param>
    /// <returns>
-   /// <see langword="true"/> if the given <paramref name="type"/> implements
-   /// the given <paramref name="openInterface"/>, <see langword="false"/> otherwise.<br/><br/>
-   /// Also <see langword="false"/> if the given <paramref name="openInterface"/> 
-   /// is not a generic type definition.
+   /// <para>
+   ///   <see langword="true"/> if the given <paramref name="type"/> implements
+   ///   the given <paramref name="openInterface"/>, <see langword="false"/> otherwise.
+   /// </para>
+   /// <para>
+   ///   Also <see langword="false"/> if the given <paramref name="openInterface"/> 
+   ///   is not a generic type definition.
+   /// </para>
    /// </returns>
    public static bool ImplementsOpenInterface(this Type type, Type openInterface)
    {
       IEnumerable<Type> implemented = GetOpenInterfaceImplementations(type, openInterface);
 
       return implemented.Any();
+   }
+
+   /// <summary>
+   /// Checks whether the given <paramref name="type"/> implements
+   /// any of the given <paramref name="openInterfaces"/>.
+   /// </summary>
+   /// <param name="type">The type to check.</param>
+   /// <param name="openInterfaces">
+   /// The types of the open interfaces, this means the non-constructed generic interfaces.
+   /// </param>
+   /// <returns>
+   ///  <para>
+   ///   <see langword="true"/> if the given <paramref name="type"/> implements any
+   ///    of the given <paramref name="openInterfaces"/>, <see langword="false"/> otherwise.
+   /// </para>
+   /// <para>
+   ///   Also <see langword="false"/> if all the given <paramref name="openInterfaces"/> 
+   ///   are not generic type definitions.
+   /// </para>
+   /// </returns>
+   public static bool ImplementsAnyOpenInterface(this Type type, params Type[] openInterfaces)
+   {
+      foreach (Type openInterface in openInterfaces)
+      {
+         if (ImplementsOpenInterface(type, openInterface))
+            return true;
+      }
+
+      return false;
+   }
+
+   /// <summary>
+   /// Checks whether the given <paramref name="type"/> implements
+   /// all of the given <paramref name="openInterfaces"/>.
+   /// </summary>
+   /// <param name="type">The type to check.</param>
+   /// <param name="openInterfaces">
+   /// The types of the open interfaces, this means the non-constructed generic interfaces.
+   /// </param>
+   /// <returns>
+   ///  <para>
+   ///   <see langword="true"/> if the given <paramref name="type"/> implements all
+   ///    of the given <paramref name="openInterfaces"/>, <see langword="false"/> otherwise.
+   /// </para>
+   /// <para>
+   ///   Also <see langword="false"/> if any of the given <paramref name="openInterfaces"/> 
+   ///   are not generic type definitions.
+   /// </para>
+   /// </returns>
+   public static bool ImplementsAllOpenInterfaces(this Type type, params Type[] openInterfaces)
+   {
+      foreach (Type openInterface in openInterfaces)
+      {
+         if (ImplementsOpenInterface(type, openInterface) == false)
+            return false;
+      }
+
+      return true;
    }
 
    /// <summary>Whether or an instance of the given <paramref name="type"/> can be created.</summary>
@@ -138,4 +201,5 @@ public static class TypeExtensions
             yield return implementedInterface;
       }
    }
+   #endregion
 }
