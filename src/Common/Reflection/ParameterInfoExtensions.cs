@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace TNO.Common.Extensions;
+namespace TNO.Common.Reflection;
 
 /// <summary>
 /// Contains extension methods for the <see cref="ParameterInfo"/> class.

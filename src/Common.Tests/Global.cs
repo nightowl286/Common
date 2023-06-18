@@ -9,5 +9,7 @@ global using Microsoft.VisualStudio.TestTools.UnitTesting;
 internal static class Category
 {
    public const string Extensions = nameof(Extensions);
+   public const string Reflection = nameof(Reflection);
+   public const string Serialisation = nameof(Serialisation);
    public const string Observers = nameof(Observers);
 }

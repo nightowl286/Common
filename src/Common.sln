@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Tests", "Common.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{511B4690-FB21-452D-BF22-09F70B66C9A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "misc\Playground\Playground.csproj", "{42DB598F-A9C4-4501-856D-79A330030548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground", "misc\Playground\Playground.csproj", "{42DB598F-A9C4-4501-856D-79A330030548}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

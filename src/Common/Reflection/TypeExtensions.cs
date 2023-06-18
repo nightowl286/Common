@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace TNO.Common.Extensions;
+namespace TNO.Common.Reflection;
 
 /// <summary>
 /// Contains extension methods for the <see cref="Type"/> class.
@@ -44,7 +44,7 @@ public static class TypeExtensions
    /// </returns>
    public static bool ImplementsOpenInterface(this Type type, Type openInterface)
    {
-      IEnumerable<Type> implemented = GetOpenInterfaceImplementations(type, openInterface);
+      IEnumerable<Type> implemented = type.GetOpenInterfaceImplementations(openInterface);
 
       return implemented.Any();
    }
@@ -71,7 +71,7 @@ public static class TypeExtensions
    {
       foreach (Type openInterface in openInterfaces)
       {
-         if (ImplementsOpenInterface(type, openInterface))
+         if (type.ImplementsOpenInterface(openInterface))
             return true;
       }
 
@@ -100,7 +100,7 @@ public static class TypeExtensions
    {
       foreach (Type openInterface in openInterfaces)
       {
-         if (ImplementsOpenInterface(type, openInterface) == false)
+         if (type.ImplementsOpenInterface(openInterface) == false)
             return false;
       }
 

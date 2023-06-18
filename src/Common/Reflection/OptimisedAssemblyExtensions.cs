@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace TNO.Common.Extensions;
+namespace TNO.Common.Reflection;
 
 /// <summary>
 /// Contains helpful extension methods that can check whether an <see cref="Assembly"/> is optimised or not.
@@ -36,7 +36,7 @@ public static class OptimisedAssemblyExtensions
    /// optimised <see cref="Assembly"/>, <see langword="false"/> otherwise.
    /// </returns>
    public static bool IsInOptimisedAssembly(this Type type)
-      => IsOptimised(type.Assembly);
+      => type.Assembly.IsOptimised();
 
    /// <summary>Checks whether the given <paramref name="member"/> is in an optimised <see cref="Assembly"/>.</summary>
    /// <param name="member">The method base to check.</param>
@@ -50,7 +50,7 @@ public static class OptimisedAssemblyExtensions
       if (member.DeclaringType is null)
          return null;
 
-      return IsOptimised(member.DeclaringType.Assembly);
+      return member.DeclaringType.Assembly.IsOptimised();
    }
    #endregion
 }

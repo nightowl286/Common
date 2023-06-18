@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using TNO.Common.Extensions;
+using TNO.Common.Reflection;
 
-namespace TNO.Common.Tests.Extensions;
+namespace TNO.Common.Tests.Reflection;
 
 [TestClass]
-[TestCategory(Category.Extensions)]
+[TestCategory(Category.Reflection)]
 public class ParameterInfoExtensionsTests
 {
    #region Test Methods
@@ -21,7 +21,7 @@ public class ParameterInfoExtensionsTests
       ParameterInfo parameter = GetParamterInfo(methodName);
 
       // Act
-      bool isNullable = ParameterInfoExtensions.IsNullable(parameter);
+      bool isNullable = parameter.IsNullable();
 
       // Assert
       Assert.IsTrue(isNullable);
@@ -40,7 +40,7 @@ public class ParameterInfoExtensionsTests
       ParameterInfo parameter = GetParamterInfo(methodName);
 
       // Act
-      bool isNullable = ParameterInfoExtensions.IsNullable(parameter);
+      bool isNullable = parameter.IsNullable();
 
       // Assert
       Assert.IsFalse(isNullable);

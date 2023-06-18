@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TNO.Common.Extensions;
+namespace TNO.Common.Reflection;
 
 /// <summary>
 /// Contains useful extension methods related to the <see cref="MemberInfo"/>.
