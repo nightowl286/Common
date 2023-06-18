@@ -71,7 +71,7 @@ public static class BinaryWriterExtensions
    }
    #endregion
 
-   #region Methods
+   #region Nullable
    /// <summary>
    /// Writes a <see cref="bool"/> value that indicates if the 
    /// given <paramref name="value"/> is <see langword="null"/>.
@@ -95,6 +95,30 @@ public static class BinaryWriterExtensions
       return true;
    }
 
+   /// <summary>
+   /// Writes a <see cref="bool"/> value that indicates if the given <paramref name="value"/> is
+   /// <see langword="null"/>. If the <paramref name="value"/> is not <see langword="null"/> then the given
+   /// <paramref name="writeCallback"/> is invoked to write the <paramref name="value"/>.
+   /// </summary>
+   /// <typeparam name="T">The type of the <paramref name="value"/>.</typeparam>
+   /// <param name="writer">The <see cref="BinaryWriter"/> to use.</param>
+   /// <param name="value">The value to write.</param>
+   /// <param name="writeCallback">The callback that is invoked to write the non <see langword="null"/> value.</param>
+   public static void TryWriteNullable<T>(this BinaryWriter writer, [NotNullWhen(true)] T? value, Action<T> writeCallback)
+   {
+      if (TryWriteNullable(writer, value))
+         writeCallback.Invoke(value);
+   }
+
+   /// <inheritdoc cref="TryWriteNullable{T}(BinaryWriter, T, Action{T})"/>
+   public static void TryWriteNullable<T>(this BinaryWriter writer, [NotNullWhen(true)] T? value, Action<BinaryWriter, T> writeCallback)
+   {
+      if (TryWriteNullable(writer, value))
+         writeCallback.Invoke(writer, value);
+   }
+   #endregion
+
+   #region Methods
    /// <summary>Writes the given <paramref name="guid"/> to the underlying stream.</summary>
    /// <param name="writer">The writer to use.</param>
    /// <param name="guid">The <see cref="Guid"/> to write.</param>
