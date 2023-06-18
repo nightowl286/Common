@@ -23,21 +23,21 @@ public class ImpossibleException : Exception
    /// class with a specified error <paramref name="message"/>.
    /// </summary>
    /// <inheritdoc/>
-   public ImpossibleException(string message) : base(message) { }
+   public ImpossibleException(string? message) : base(message) { }
 
    /// <summary>
    /// Initializes a new instance of the <see cref="ImpossibleException"/> class with the <see cref="DefaultMessage"/>
    /// and a reference to the <paramref name="inner"/> exception that is the cause of this exception.
    /// </summary>
    /// <inheritdoc/>
-   public ImpossibleException(Exception inner) : base(DefaultMessage, inner) { }
+   public ImpossibleException(Exception? inner) : base(DefaultMessage, inner) { }
 
    /// <summary>
    /// Initializes a new instance of the <see cref="ImpossibleException"/> class with a specified error
    /// <paramref name="message"/> and a reference to the <paramref name="inner"/> exception that is the cause of this exception.
    /// </summary>
    /// <inheritdoc/>
-   public ImpossibleException(string message, Exception inner) : base(message, inner) { }
+   public ImpossibleException(string? message, Exception? inner) : base(message, inner) { }
 
    /// <summary>Initializes a new instance of the <see cref="ImpossibleException"/> class with serialized data.</summary>
    /// <inheritdoc/>
