@@ -102,7 +102,7 @@ public static class BinaryReaderExtensions
    /// if the written value was <see langword="null"/>.
    /// </returns>
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-   public static bool TryReadNullable(BinaryReader reader) => reader.ReadBoolean();
+   public static bool TryReadNullable(this BinaryReader reader) => reader.ReadBoolean();
 
    /// <summary>Tries to read a nullable value using the given <paramref name="readCallback"/>.</summary>
    /// <typeparam name="T">The type of the value to read.</typeparam>
@@ -110,7 +110,7 @@ public static class BinaryReaderExtensions
    /// <param name="readCallback">The callback that will be invoked if the written value was not <see langword="null"/>.</param>
    /// <returns>The value read with the <paramref name="readCallback"/>, or <see langword="null"/>.</returns>
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-   public static T? TryReadNullable<T>(BinaryReader reader, Func<T> readCallback)
+   public static T? TryReadNullable<T>(this BinaryReader reader, Func<T> readCallback)
    {
       if (reader.ReadBoolean())
          return readCallback.Invoke();
@@ -124,7 +124,7 @@ public static class BinaryReaderExtensions
    /// <param name="readCallback">The callback that will be invoked if the written value was not <see langword="null"/>.</param>
    /// <returns>The value read with the <paramref name="readCallback"/>, or <see langword="null"/>.</returns>
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-   public static T? TryReadNullable<T>(BinaryReader reader, Func<BinaryReader, T> readCallback)
+   public static T? TryReadNullable<T>(this BinaryReader reader, Func<BinaryReader, T> readCallback)
    {
       if (reader.ReadBoolean())
          return readCallback.Invoke(reader);
